@@ -27,67 +27,81 @@ def main():
     siteChoice = 0
     side = 0 # 0 is attack, 1 is defense
     outcome = 0 # 0 is win, 1 is loss
-    # Pick map
-    while True:
-        for i, m in enumerate(maps):
-            print("{}: {}".format(i, m))
-        print("\nWhich map # did you play?\n: ", end='')
+    inProgram = True
+    programChoice = 0 # 0 is round entry, 1 is stats, 2 is quit
 
-        mapChoice = int(input())
-        if mapChoice >= 0 and mapChoice < len(maps):
-            break
-    print()
-
-    while True:
-        # Pick site
-        while True:
-            for i, m in enumerate(mapSites[maps[mapChoice]]):
-                print("{}: {}".format(i, m))
-            print("\nWhich site # did you play?\n: ", end='')
-
-            siteChoice = int(input())
-            if siteChoice >= 0 and siteChoice < len(mapSites[maps[mapChoice]]):
-                break
+    while inProgram:
+        print("\nPick from the choices:")
+        print("0: Enter rounds\n1: View stats\n2: Quit\n: ", end='')
+        programChoice = int(input())
         print()
 
-        # Attack/Def
-        while True:
-            print("\nWhich side were you on? (a/d)\n: ", end='')
-            
-            c = input()
+        if programChoice == 0:
+            # Pick map
+            while True:
+                for i, m in enumerate(maps):
+                    print("{}: {}".format(i, m))
+                print("\nWhich map # did you play?\n: ", end='')
 
-            if c.lower() == 'a':
-                side = 0
-                break
-            elif c.lower() == 'd':
-                side = 1
-                break
-        print()
+                mapChoice = int(input())
+                if mapChoice >= 0 and mapChoice < len(maps):
+                    break
+            print()
 
-        # Win/Loss
-        while True:
-            print("\nDid you win or lose that round? (w/l)\n: ", end='')
+            while True:
+                # Pick site
+                while True:
+                    for i, m in enumerate(mapSites[maps[mapChoice]]):
+                        print("{}: {}".format(i, m))
+                    print("\nWhich site # did you play?\n: ", end='')
 
-            c = input()
+                    siteChoice = int(input())
+                    if siteChoice >= 0 and siteChoice < len(mapSites[maps[mapChoice]]):
+                        break
+                print()
 
-            if c.lower() == 'w':
-                outcome = 0
-                break
-            elif c.lower() == 'l':
-                outcome = 1
-                break
+                # Attack/Def
+                while True:
+                    print("\nWhich side were you on? (a/d)\n: ", end='')
+                    
+                    c = input()
 
-        # Write round to CSV
-        with open('winloss.csv', 'w') as myfile:
-            wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-            l = [mapChoice, siteChoice, side, outcome]
-            wr.writerow(l)
-        
-        print("Enter another round? (y/n)\n: ", end='')
+                    if c.lower() == 'a':
+                        side = 0
+                        break
+                    elif c.lower() == 'd':
+                        side = 1
+                        break
+                print()
 
-        c = input()
+                # Win/Loss
+                while True:
+                    print("\nDid you win or lose that round? (w/l)\n: ", end='')
 
-        if c.lower() == 'n':
+                    c = input()
+
+                    if c.lower() == 'w':
+                        outcome = 0
+                        break
+                    elif c.lower() == 'l':
+                        outcome = 1
+                        break
+
+                # Write round to CSV
+                with open('winloss.csv', 'w') as myfile:
+                    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+                    l = [mapChoice, siteChoice, side, outcome]
+                    wr.writerow(l)
+                
+                print("Enter another round? (y/n)\n: ", end='')
+
+                c = input()
+
+                if c.lower() == 'n':
+                    break
+        elif programChoice == 1:
+            print('e')
+        elif programChoice == 2:
             break
 
 if __name__ == "__main__":
