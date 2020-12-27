@@ -96,7 +96,7 @@ def main():
                         break
 
                 # Write round to CSV
-                with open('winloss.csv', 'a') as f:
+                with open('winloss.csv', 'a+') as f:
                     wr = csv.writer(f, quoting=csv.QUOTE_ALL)
                     l = [mapChoice, siteChoice, side, outcome]
                     wr.writerow(l)
