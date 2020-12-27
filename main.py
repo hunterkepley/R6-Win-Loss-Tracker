@@ -1,23 +1,31 @@
 import csv
 # R6 WL Tracker 2020
 
+class Site:
+    def __init__(self, name):
+        self.name = name
+        self.aWins = 0
+        self.aLosses = 0
+        self.dWins = 0
+        self.dLosses = 0
+
 maps = [
     "Clubhouse", 
     "Coastline", 
     "Consulate",
-    "Kafe", 
+    "Kafe Dostoyevsky", 
     "Oregon", 
     "Theme Park", 
     "Villa"
 ]
 mapSites = {
-    "Clubhouse": ["Bedroom/Gym", "Bar/Stock", "Cash/CCTV", "Church/Arsenal"], 
-    "Coastline": ["Billiards/Hookah", "Theater/Penthouse", "Kitchen/Service", "Blue/Sunrise"], 
-    "Consulate": ["Meeting/Consulate", "Press/Lobby", "Archives/Tellers", "Cafeteria/Garage"],
-    "Kafe": ["Cocktail", "Fireplace/Mining", "Reading/Fireplace", "Kitchen"], 
-    "Oregon": ["Kids/Dorms", "Kitchen/Dining", "Meeting/Kitchen", "Laundry/Supply"], 
-    "Theme Park": ["Initiation/Office", "Bunk/Day Care", "Armory/Throne", "Lab/Storage"], 
-    "Villa": ["Aviator/Games", "Trophy/Statuary", "Living Room/Library", "Dining Room/Kitchen"]
+    maps[0]: [Site("Bedroom/Gym"), Site("Bar/Stock"), Site("Cash/CCTV"), Site("Church/Arsenal")], 
+    maps[1]: [Site("Billiards/Hookah"), Site("Theater/Penthouse"), Site("Kitchen/Service"), Site("Blue/Sunrise")], 
+    maps[2]: [Site("Meeting/Consulate"), Site("Press/Lobby"), Site("Archives/Tellers"), Site("Cafeteria/Garage")],
+    maps[3]: [Site("Cocktail"), Site("Fireplace/Mining"), Site("Reading/Fireplace"), Site("Kitchen")], 
+    maps[4]: [Site("Kids/Dorms"), Site("Kitchen/Dining"), Site("Meeting/Kitchen"), Site("Laundry/Supply")], 
+    maps[5]: [Site("Initiation/Office"), Site("Bunk/Day Care"), Site("Armory/Throne"), Site("Lab/Storage")], 
+    maps[6]: [Site("Aviator/Games"), Site("Trophy/Statuary"), Site("Living Room/Library"), Site("Dining Room/Kitchen")]
 }
 
 def main():
@@ -52,7 +60,7 @@ def main():
                 # Pick site
                 while True:
                     for i, m in enumerate(mapSites[maps[mapChoice]]):
-                        print("{}: {}".format(i, m))
+                        print("{}: {}".format(i, m.name))
                     print("\nWhich site # did you play?\n: ", end='')
 
                     siteChoice = int(input())
@@ -88,8 +96,8 @@ def main():
                         break
 
                 # Write round to CSV
-                with open('winloss.csv', 'w') as myfile:
-                    wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+                with open('winloss.csv', 'a') as f:
+                    wr = csv.writer(f, quoting=csv.QUOTE_ALL)
                     l = [mapChoice, siteChoice, side, outcome]
                     wr.writerow(l)
                 
@@ -100,9 +108,79 @@ def main():
                 if c.lower() == 'n':
                     break
         elif programChoice == 1:
-            print('e')
+            displayStats()
         elif programChoice == 2:
             break
+
+def displayStats():
+
+    # Local variables
+    mapChoice = 0
+
+    # Reset stats in memory
+    mapSites = {
+        maps[0]: [Site("Bedroom/Gym"), Site("Bar/Stock"), Site("Cash/CCTV"), Site("Church/Arsenal")], 
+        maps[1]: [Site("Billiards/Hookah"), Site("Theater/Penthouse"), Site("Kitchen/Service"), Site("Blue/Sunrise")], 
+        maps[2]: [Site("Meeting/Consulate"), Site("Press/Lobby"), Site("Archives/Tellers"), Site("Cafeteria/Garage")],
+        maps[3]: [Site("Cocktail"), Site("Fireplace/Mining"), Site("Reading/Fireplace"), Site("Kitchen")], 
+        maps[4]: [Site("Kids/Dorms"), Site("Kitchen/Dining"), Site("Meeting/Kitchen"), Site("Laundry/Supply")], 
+        maps[5]: [Site("Initiation/Office"), Site("Bunk/Day Care"), Site("Armory/Throne"), Site("Lab/Storage")], 
+        maps[6]: [Site("Aviator/Games"), Site("Trophy/Statuary"), Site("Living Room/Library"), Site("Dining Room/Kitchen")]
+    }
+
+
+    # Open and gather data
+    with open('winloss.csv', 'r') as f:
+        for _, line in enumerate(f): 
+            r = line.replace('"', '')
+            s = r.split(',')
+            map = maps[int(s[0])]
+            site = mapSites[map][int(s[1])]
+            side = int(s[2])
+            outcome = int(s[3])
+
+            if side == 0:
+                if outcome == 0:
+                    site.aWins += 1
+                else:
+                    site.aLosses += 1
+            else:
+                if outcome == 0:
+                    site.dWins += 1
+                else:
+                    site.dLosses += 1
+
+    # Pick map
+    while True:
+        for i, m in enumerate(maps):
+            print("{}: {}".format(i, m))
+        print("\nWhich map # would you like to view stats of?\n: ", end='')
+
+        mapChoice = int(input())
+        if mapChoice >= 0 and mapChoice < len(maps):
+            break
+    print()
+
+    for _, site in enumerate(mapSites[maps[mapChoice]]):
+        aWinrate = -1
+        dWinrate = -1
+        if site.aWins > 0:
+            aWinrate = 100
+        if site.dWins > 0:
+            dWinrate = 100
+        if site.aLosses > 0:
+            aWinrate = (site.aWins/(site.aWins+site.aLosses)) * 100
+        if site.dLosses > 0:
+            dWinrate = (site.dWins/(site.dWins+site.dLosses)) * 100
+        if aWinrate > 100:
+            aWinrate = 100
+        if dWinrate > 100:
+            dWinrate = 100
+        
+        # Print results
+        print("{} - Attack: {}% | Defense: {}%".format(site.name, aWinrate, dWinrate))
+
+            
 
 if __name__ == "__main__":
     main()
