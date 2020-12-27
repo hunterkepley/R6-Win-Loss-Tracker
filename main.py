@@ -101,7 +101,7 @@ def main():
                     l = [mapChoice, siteChoice, side, outcome]
                     wr.writerow(l)
                 
-                print("Enter another round? (y/n)\n: ", end='')
+                print("Enter another round on {}? (y/n)\n: ".format(maps[mapChoice]), end='')
 
                 c = input()
 
@@ -174,10 +174,6 @@ def displayStats():
             aWinrate = (site.aWins/(site.aWins+site.aLosses)) * 100
         if site.dLosses > 0:
             dWinrate = (site.dWins/(site.dWins+site.dLosses)) * 100
-        if aWinrate > 100:
-            aWinrate = 100
-        if dWinrate > 100:
-            dWinrate = 100
         
         # Print results
         print("\t{} - Attack: {}% ({} Rounds) | Defense: {}% ({} Rounds)".format(site.name, aWinrate, totalARounds, dWinrate, totalDRounds))
