@@ -176,7 +176,7 @@ def displayStats():
             dWinrate = (site.dWins/(site.dWins+site.dLosses)) * 100
         
         # Print results
-        print("\t{} - Attack: {}% ({} Rounds) | Defense: {}% ({} Rounds)".format(site.name, aWinrate, totalARounds, dWinrate, totalDRounds))
+        print("\t{} - Attack: {:.2f}% ({} Rounds) | Defense: {:.2f}% ({} Rounds)".format(site.name, aWinrate, totalARounds, dWinrate, totalDRounds))
 
             
 
