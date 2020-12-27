@@ -128,6 +128,9 @@ def displayStats():
         maps[6]: [Site("Aviator/Games"), Site("Trophy/Statuary"), Site("Living Room/Library"), Site("Dining Room/Kitchen")]
     }
 
+    # Create file if doesn't exist
+    with open('winloss.csv', 'a+') as f:
+        pass
 
     # Open and gather data
     with open('winloss.csv', 'r') as f:
