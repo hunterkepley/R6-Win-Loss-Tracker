@@ -164,6 +164,8 @@ def displayStats():
     for _, site in enumerate(mapSites[maps[mapChoice]]):
         aWinrate = -1
         dWinrate = -1
+        totalARounds = site.aWins+site.aLosses
+        totalDRounds = site.dWins+site.dLosses
         if site.aWins > 0:
             aWinrate = 100
         if site.dWins > 0:
@@ -178,7 +180,7 @@ def displayStats():
             dWinrate = 100
         
         # Print results
-        print("{} - Attack: {}% | Defense: {}%".format(site.name, aWinrate, dWinrate))
+        print("\t{} - Attack: {}% ({} Rounds) | Defense: {}% ({} Rounds)".format(site.name, aWinrate, totalARounds, dWinrate, totalDRounds))
 
             
 
