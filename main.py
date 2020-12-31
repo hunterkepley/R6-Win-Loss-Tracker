@@ -137,21 +137,24 @@ def displayStats():
         for _, line in enumerate(f): 
             r = line.replace('"', '')
             s = r.split(',')
-            map = maps[int(s[0])]
-            site = mapSites[map][int(s[1])]
-            side = int(s[2])
-            outcome = int(s[3])
+            try:
+                map = maps[int(s[0])]
+                site = mapSites[map][int(s[1])]
+                side = int(s[2])
+                outcome = int(s[3])
 
-            if side == 0:
-                if outcome == 0:
-                    site.aWins += 1
+                if side == 0:
+                    if outcome == 0:
+                        site.aWins += 1
+                    else:
+                        site.aLosses += 1
                 else:
-                    site.aLosses += 1
-            else:
-                if outcome == 0:
-                    site.dWins += 1
-                else:
-                    site.dLosses += 1
+                    if outcome == 0:
+                        site.dWins += 1
+                    else:
+                        site.dLosses += 1
+            except:
+                continue
 
     # Pick map
     while True:
